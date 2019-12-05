@@ -44,7 +44,7 @@
 
 #include <iostream>
 
-Eigen::Vector3d rotationMatrixToEulerAngles(Eigen::Matrix3d R)
+Eigen::Vector3d opengv::absolute_pose::rotationMatrixToEulerAngles(Eigen::Matrix3d R)
 {
     
     //     assert(cv::isRotationMatrix(R));
@@ -70,7 +70,7 @@ Eigen::Vector3d rotationMatrixToEulerAngles(Eigen::Matrix3d R)
 	
 }
 
-Eigen::Matrix3d EulerAnglesTorotationMatrix(const double mxRoll, const double myPitch, const double mzYaw)
+Eigen::Matrix3d opengv::absolute_pose::EulerAnglesTorotationMatrix(const double mxRoll, const double myPitch, const double mzYaw)
 {
 	 Eigen::Matrix3d Rx_Roll;
 	Rx_Roll <<  1, 0, 0,
@@ -86,7 +86,7 @@ Eigen::Matrix3d EulerAnglesTorotationMatrix(const double mxRoll, const double my
 	return R;
 }
 
-void pose_estimate_3d3d(const vector< Vector3d >& vpts1, const vector< Vector3d >& vpts2, Matrix3d& R, Vector3d& t)
+void opengv::absolute_pose::pose_estimate_3d3d(const vector< Vector3d >& vpts1, const vector< Vector3d >& vpts2, Matrix3d& R, Vector3d& t)
 {
 	Vector3d p1(0,0,0);
 	Vector3d p2(0,0,0);     // center of mass

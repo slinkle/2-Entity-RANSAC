@@ -56,7 +56,13 @@ namespace opengv
  */
 namespace absolute_pose
 {
-
+void pose_estimate_3d3d
+(const std::vector< Eigen::Vector3d >& vpts1, 
+ const std::vector< Eigen::Vector3d >& vpts2, 
+ Eigen::Matrix3d& R, Eigen::Vector3d& t);
+Eigen::Matrix3d EulerAnglesTorotationMatrix
+(const double mxRoll, const double myPitch, const double mzYaw);
+Eigen::Vector3d rotationMatrixToEulerAngles(Eigen::Matrix3d R);
 /** \brief Compute the pose of a central viewpoint with known rotation using two
  *         point correspondences.
  *

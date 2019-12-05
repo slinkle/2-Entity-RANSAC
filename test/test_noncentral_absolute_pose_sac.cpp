@@ -53,31 +53,6 @@ using namespace std;
 using namespace Eigen;
 using namespace opengv;
 
-Eigen::Vector3d rotationMatrixToEulerAngles(Eigen::Matrix3d R)
-{
-    
-    //     assert(cv::isRotationMatrix(R));
-
-	float sy = sqrt(R(0,0) * R(0,0) +  R(1,0) * R(1,0) );
-    
-	bool singular = sy < 1e-6; // If
-    
-	float x, y, z;
-	if (!singular)
-	{
-	    x = atan2(R(2,1) , R(2,2));
-	    y = atan2(-R(2,0), sy);
-	    z = atan2(R(1,0), R(0,0));
-	}
-	else
-	{
-	    x = atan2(-R(1,2), R(1,1));
-	    y = atan2(-R(2,0), sy);
-	    z = 0;
-	}
-	return Eigen::Vector3d(x, y, z);
-	
-}
 
 int main( int argc, char** argv )
 {
@@ -97,7 +72,7 @@ int main( int argc, char** argv )
   translation_t position = generateRandomTranslation(2.0);
   rotation_t rotation = generateRandomRotation(0.5);
   double mypitch, mxroll, mzyaw;
-  Eigen::Vector3d Eulerxyz=rotationMatrixToEulerAngles(rotation);
+  Eigen::Vector3d Eulerxyz=opengv::absolute_pose::rotationMatrixToEulerAngles(rotation);
 	mxroll = Eulerxyz(0);
 	mypitch = Eulerxyz(1);
 	mzyaw = Eulerxyz(2);

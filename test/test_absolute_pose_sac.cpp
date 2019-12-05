@@ -53,31 +53,6 @@ using namespace std;
 using namespace Eigen;
 using namespace opengv;
 
-Eigen::Vector3d rotationMatrixToEulerAngles(Eigen::Matrix3d R)
-{
-    
-    //     assert(cv::isRotationMatrix(R));
-
-	float sy = sqrt(R(0,0) * R(0,0) +  R(1,0) * R(1,0) );
-    
-	bool singular = sy < 1e-6; // If
-    
-	float x, y, z;
-	if (!singular)
-	{
-	    x = atan2(R(2,1) , R(2,2));
-	    y = atan2(-R(2,0), sy);
-	    z = atan2(R(1,0), R(0,0));
-	}
-	else
-	{
-	    x = atan2(-R(1,2), R(1,1));
-	    y = atan2(-R(2,0), sy);
-	    z = 0;
-	}
-	return Eigen::Vector3d(x, y, z);
-	
-}
 
 int main( int argc, char** argv )
 {
@@ -85,7 +60,7 @@ int main( int argc, char** argv )
   initializeRandomSeed();
   
   //set experiment parameters
-  double noise = 0.0;
+  double noise = 0.5;
   double outlierFraction = 0;
   size_t numberPoints = 20;
   size_t numberLines = 20;
@@ -97,7 +72,7 @@ int main( int argc, char** argv )
   translation_t position = generateRandomTranslation(2.0);
   rotation_t rotation = generateRandomRotation(0.5);
   double mypitch, mxroll, mzyaw;
-  Eigen::Vector3d Eulerxyz=rotationMatrixToEulerAngles(rotation);
+  Eigen::Vector3d Eulerxyz=opengv::absolute_pose::rotationMatrixToEulerAngles(rotation);
 	mxroll = Eulerxyz(0);
 	mypitch = Eulerxyz(1);
 	mzyaw = Eulerxyz(2);
@@ -168,13 +143,20 @@ int main( int argc, char** argv )
   struct timeval tic;
   struct timeval toc;
   gettimeofday( &tic, 0 );
-  ransac.compute2EModel();
+  bool ransac_success = ransac.compute2EModel();
   gettimeofday( &toc, 0 );
   double ransac_time = TIMETODOUBLE(timeval_minus(toc,tic));
+  Eigen::Matrix<double, 3, 4> final_model = ransac.model_coefficients_;
+   if (ransac_success) {
+		// Optional nonlinear model refinement over all inliers.
+		absposeproblem_ptr->optimizeModelCoefficients(ransac.inliers_,
+														ransac.model_coefficients_,
+														final_model);
+	}
 
   //print the results
   std::cout << "the 2E2P ransac results is: " << std::endl;
-  std::cout << ransac.model_coefficients_ << std::endl << std::endl;
+  std::cout << final_model << std::endl << std::endl;
   std::cout << "Ransac needed " << ransac.iterations_ << " iterations and ";
   std::cout << ransac_time << " seconds" << std::endl << std::endl;
   std::cout << "the number of inliers is: " << ransac.inliers_.size();
@@ -215,16 +197,27 @@ int main( int argc, char** argv )
 //   struct timeval tic;
 //   struct timeval toc;
   gettimeofday( &tic, 0 );
-  ransac3.compute1P1LModel();
+  bool ransac_success3 = ransac3.compute1P1LModel();
   gettimeofday( &toc, 0 );
   double ransac3_time = TIMETODOUBLE(timeval_minus(toc,tic));
+  Eigen::Matrix<double, 3, 4> final_model3 = ransac3.model_coefficients_;
+	  if (ransac_success3) {
+		// Optional nonlinear model refinement over all inliers.
+// 		absposeproblem_ptr3->optimizeModelCoefficients(ransac3.inliers_,ransac3.line_inliers_,
+// 														ransac3.model_coefficients_,
+// 														final_model3);
+		absposeproblem_ptr3->optimizeModelCoefficients(ransac3.inliers_,
+														ransac3.model_coefficients_,
+														final_model3);
+	}
 
   //print the results
   std::cout << "the 2E1P1L ransac results is: " << std::endl;
-  std::cout << ransac3.model_coefficients_ << std::endl << std::endl;
+  std::cout << final_model3 << std::endl << std::endl;
   std::cout << "Ransac needed " << ransac3.iterations_ << " iterations and ";
   std::cout << ransac3_time << " seconds" << std::endl << std::endl;
-  std::cout << "the number of inliers is: " << ransac3.inliers_.size();
+  std::cout << "the number of inliers is: " << (ransac3.inliers_.size());
+//   std::cout << "the number of line inliers is: " << (ransac3.line_inliers_.size());
   std::cout << std::endl << std::endl;
   std::cout << "the found inliers are: " << std::endl;
   for(size_t i = 0; i < ransac3.inliers_.size(); i++)
@@ -240,7 +233,7 @@ int main( int argc, char** argv )
       sac_problems::absolute_pose::AbsolutePoseSacProblem> absposeproblem_ptr2(
       new sac_problems::absolute_pose::AbsolutePoseSacProblem(
       adapter,
-      sac_problems::absolute_pose::AbsolutePoseSacProblem::UPNP,indices));
+      sac_problems::absolute_pose::AbsolutePoseSacProblem::GAO,indices));
   ransac2.sac_model_ = absposeproblem_ptr2;
   ransac2.threshold_ = 1.0 - cos(atan(sqrt(2.0)*0.5/800.0));
   ransac2.max_iterations_ = 50;
@@ -249,13 +242,20 @@ int main( int argc, char** argv )
 //   struct timeval tic;
 //   struct timeval toc;
   gettimeofday( &tic, 0 );
-  ransac2.computeModel();
+  bool ransac_success2 = ransac2.computeModel();
   gettimeofday( &toc, 0 );
   double ransac2_time = TIMETODOUBLE(timeval_minus(toc,tic));
+  Eigen::Matrix<double, 3, 4> final_model2 = ransac2.model_coefficients_;
+   if (ransac_success2) {
+		// Optional nonlinear model refinement over all inliers.
+		absposeproblem_ptr2->optimizeModelCoefficients(ransac2.inliers_,
+														ransac2.model_coefficients_,
+														final_model2);
+	}
 
   //print the results
   std::cout << "the UPNP ransac results is: " << std::endl;
-  std::cout << ransac2.model_coefficients_ << std::endl << std::endl;
+  std::cout << final_model2 << std::endl << std::endl;
   std::cout << "Ransac needed " << ransac2.iterations_ << " iterations and ";
   std::cout << ransac2_time << " seconds" << std::endl << std::endl;
   std::cout << "the number of inliers is: " << ransac2.inliers_.size();
