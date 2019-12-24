@@ -60,7 +60,7 @@ opengv::sac_problems::
   }
   case MCMixed:
   {
-	  solutions = opengv::absolute_pose::mc2p(_adapter,_mpitch,_mroll,_myaw,indices);
+	  solutions = opengv::absolute_pose::mc2p(_adapter,_mpitch,_mroll,indices);
 	  break;
 	}
 	  
@@ -105,12 +105,12 @@ opengv::sac_problems::
   }
   case MC1P1L:
   {
-	  solutions = opengv::absolute_pose::mc1p1l(_adapter,_mpitch,_mroll,_myaw,indices);
+	  solutions = opengv::absolute_pose::mc1p1l(_adapter,_mpitch,_mroll,indices);
 	  break; 
   }
   case MCMixed:
   {
-	  solutions = opengv::absolute_pose::mc1p1l(_adapter,_mpitch,_mroll,_myaw,indices);
+	  solutions = opengv::absolute_pose::mc1p1l(_adapter,_mpitch,_mroll,indices);
 	  break;
 	}
 	  

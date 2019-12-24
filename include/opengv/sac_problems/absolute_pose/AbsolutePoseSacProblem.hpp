@@ -136,32 +136,6 @@ public:
   {
     setIndices(indices);
   };
-  
-
-  
-    AbsolutePoseSacProblem(adapter_t & adapter, algorithm_t algorithm, double mpitch, double mroll,double myaw,
-      bool randomSeed = true) :
-      sac::SampleConsensusProblem<model_t> (randomSeed),
-      _adapter(adapter),
-      _algorithm(algorithm),
-      _mpitch(mpitch),
-      _mroll(mroll),
-      _myaw(myaw)
-  {
-    setUniformIndices(adapter.getNumberCorrespondences());
-  };
-  
-    AbsolutePoseSacProblem(adapter_t & adapter, algorithm_t algorithm, double mpitch, double mroll,double myaw,
-      const std::vector<int> & indices, bool randomSeed = true) :
-      sac::SampleConsensusProblem<model_t> (randomSeed),
-      _adapter(adapter),
-      _algorithm(algorithm),
-      _mpitch(mpitch),
-      _mroll(mroll),
-      _myaw(myaw)
-  {
-    setIndices(indices);
-  };
 
   /**
    * \brief Constructor.
@@ -233,7 +207,6 @@ protected:
   algorithm_t _algorithm;
   double _mpitch;
   double _mroll;
-  double _myaw;
 };
 
 }

@@ -137,31 +137,31 @@ public:
   
 
   
-    AbsoluteLinePoseSacProblem(adapter_t & adapter, algorithm_t algorithm, double mpitch, double mroll,double myaw,
-      bool randomSeed = true) :
-      sac::LineSampleConsensusProblem<model_t> (randomSeed),
-      _adapter(adapter),
-      _algorithm(algorithm),
-      _mpitch(mpitch),
-      _mroll(mroll),
-      _myaw(myaw)
-  {
-    setUniformIndices(adapter.getNumberCorrespondences());
-    setUniformLineIndices(adapter.getLineNumberCorrespondences());
-  };
-  
-    AbsoluteLinePoseSacProblem(adapter_t & adapter, algorithm_t algorithm, double mpitch, double mroll,double myaw,
-      const std::vector<int> & indices, bool randomSeed = true) :
-      sac::LineSampleConsensusProblem<model_t> (randomSeed),
-      _adapter(adapter),
-      _algorithm(algorithm),
-      _mpitch(mpitch),
-      _mroll(mroll),
-      _myaw(myaw)
-  {
-    setIndices(indices);
-    setUniformLineIndices(adapter.getLineNumberCorrespondences());
-  };
+//     AbsoluteLinePoseSacProblem(adapter_t & adapter, algorithm_t algorithm, double mpitch, double mroll,double myaw,
+//       bool randomSeed = true) :
+//       sac::LineSampleConsensusProblem<model_t> (randomSeed),
+//       _adapter(adapter),
+//       _algorithm(algorithm),
+//       _mpitch(mpitch),
+//       _mroll(mroll),
+//       _myaw(myaw)
+//   {
+//     setUniformIndices(adapter.getNumberCorrespondences());
+//     setUniformLineIndices(adapter.getLineNumberCorrespondences());
+//   };
+//   
+//     AbsoluteLinePoseSacProblem(adapter_t & adapter, algorithm_t algorithm, double mpitch, double mroll,double myaw,
+//       const std::vector<int> & indices, bool randomSeed = true) :
+//       sac::LineSampleConsensusProblem<model_t> (randomSeed),
+//       _adapter(adapter),
+//       _algorithm(algorithm),
+//       _mpitch(mpitch),
+//       _mroll(mroll),
+//       _myaw(myaw)
+//   {
+//     setIndices(indices);
+//     setUniformLineIndices(adapter.getLineNumberCorrespondences());
+//   };
 
   /**
    * \brief Constructor.

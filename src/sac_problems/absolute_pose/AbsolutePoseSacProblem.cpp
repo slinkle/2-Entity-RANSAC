@@ -189,7 +189,7 @@ opengv::sac_problems::
     
   case MC2P:
   {
-    solutions = opengv::absolute_pose::mc2p(_adapter,_mpitch,_mroll,_myaw,indices);
+    solutions = opengv::absolute_pose::mc2p(_adapter,_mpitch,_mroll,indices);
 	break;
   }
   case TWOE2P:

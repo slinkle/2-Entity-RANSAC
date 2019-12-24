@@ -99,14 +99,12 @@ transformations_t mc2p(
     const AbsoluteAdapterBase & adapter,
     const double & mpitch,
     const double & mroll,
-	const double & myaw,
     const std::vector<int> & indices );
 
 transformations_t mc2p(
     const AbsoluteAdapterBase & adapter,
     const double & mpitch,
     const double & mroll,
-	const double & myaw,
     size_t index0 = 0,
     size_t index1 = 1  );
 
@@ -115,14 +113,12 @@ transformations_t mc2p(
     const AbsoluteLineAdapterBase & adapter,
     const double & mpitch,
     const double & mroll,
-	const double & myaw,
     const std::vector<int> & indices );
 
 transformations_t mc2p(
     const AbsoluteLineAdapterBase & adapter,
     const double & mpitch,
     const double & mroll,
-	const double & myaw,
     size_t index0 = 0,
     size_t index1 = 1  );
 
@@ -143,14 +139,12 @@ transformations_t mc1p1l(
     const AbsoluteLineAdapterBase & adapter,
     const double & mpitch,
     const double & mroll,
-	const double& mzYaw, 
     const std::vector<int> & indices );
 
 transformations_t mc1p1l(
     const opengv::absolute_pose::AbsoluteLineAdapterBase& adapter, 
 	const double& myPitch, 
 	const double& mxRoll, 
-	const double& mzYaw, 
 	std::size_t index0 = 0, 
 	std::size_t index1 = 1  );
 

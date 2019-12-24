@@ -1035,11 +1035,10 @@ opengv::absolute_pose::mc1p1l(
     const AbsoluteLineAdapterBase & adapter,
     const double & mpitch,
     const double & mroll,
-    const double & mzYaw,
     const std::vector<int> & indices )
 {
   assert(indices.size()>1);
-  return mc1p1l( adapter, mpitch, mroll,mzYaw, indices[0], indices[1] );
+  return mc1p1l( adapter, mpitch, mroll, indices[0], indices[1] );
 }
 
 opengv::transformations_t 
@@ -1047,7 +1046,6 @@ opengv::absolute_pose::mc1p1l(
     const AbsoluteLineAdapterBase & adapter,
     const double & myPitch,
     const double & mxRoll,
-    const double & mzYaw,
     size_t index0,
     size_t index1)
 {
@@ -1081,9 +1079,7 @@ opengv::absolute_pose::mc1p1l(
 	Ry_Pitch << cos(myPitch), 0, sin(myPitch),
 		0, 1, 0,
 		-sin(myPitch),0, cos(myPitch);
-	Eigen::Matrix3d Rz_Yaw;
-	Rz_Yaw << cos(mzYaw),-sin(mzYaw),0,sin(mzYaw),cos(mzYaw),0,0,0,1;
-	Eigen::Matrix3d R_W_B=Rz_Yaw*Ry_Pitch*Rx_Roll;
+	Eigen::Matrix3d R_W_B=Ry_Pitch*Rx_Roll;
 
 	//  Eigen::Matrix3d R_W_B; // restore from eular
 	Eigen::Matrix3d Rgt_W_C = R_W_B*R1; // B to world * point cam to B -> point cam to world
@@ -1399,11 +1395,10 @@ opengv::absolute_pose::mc2p(
     const AbsoluteAdapterBase & adapter,
     const double & mpitch,
     const double & mroll,
-	const double & myaw,
     const std::vector<int> & indices )
 {
   assert(indices.size()>1);
-  return mc2p( adapter, mpitch, mroll, myaw, indices[0], indices[1] );
+  return mc2p( adapter, mpitch, mroll, indices[0], indices[1] );
 }
 
 opengv::transformations_t 
@@ -1411,7 +1406,6 @@ opengv::absolute_pose::mc2p(
     const AbsoluteAdapterBase & adapter,
     const double & myPitch,
     const double & mxRoll,
-	const double & mzYaw,
     size_t index0,
     size_t index1)
 {
@@ -1498,9 +1492,10 @@ opengv::absolute_pose::mc2p(
   Ry_Pitch << cos(myPitch), 0, sin(myPitch),
         0, 1, 0,
         -sin(myPitch),0, cos(myPitch);
-  Eigen::Matrix3d Rz_Yaw;
-    Rz_Yaw << cos(mzYaw),-sin(mzYaw),0,sin(mzYaw),cos(mzYaw),0,0,0,1;
-  Eigen::Matrix3d R_W_B=Rz_Yaw*Ry_Pitch*Rx_Roll;
+//   Eigen::Matrix3d Rz_Yaw;
+//     Rz_Yaw << cos(mzYaw),-sin(mzYaw),0,sin(mzYaw),cos(mzYaw),0,0,0,1;
+//   Eigen::Matrix3d R_W_B=Rz_Yaw*Ry_Pitch*Rx_Roll;
+  Eigen::Matrix3d R_W_B=Ry_Pitch*Rx_Roll;
  
 //  Eigen::Matrix3d R_W_B; // restore from eular
  Eigen::Matrix3d Rgt_W_C = R_W_B*R1;
@@ -1512,7 +1507,8 @@ opengv::absolute_pose::mc2p(
 	
 	// 	// debug
 // 	double mzyaw = Eulerxyz(2);
-// 	std::cout << "the C1_W pitch roll and yaw is " << mypitch << "," << mxroll << "," <<mzyaw << endl;
+// 	std::cout << "the 2angle pitch roll and yaw is " << mypitch << "," << mxroll << endl;
+// 	std::cout << "the 3angle pitch roll and yaw is " << mypitch3 << "," << mxroll3 << endl;
 // 	myPitch=mypitch;
 // 	mxRoll=mxroll;
 
@@ -1790,11 +1786,10 @@ opengv::absolute_pose::mc2p(
     const AbsoluteLineAdapterBase & adapter,
     const double & mpitch,
     const double & mroll,
-	const double & myaw,
     const std::vector<int> & indices )
 {
   assert(indices.size()>1);
-  return mc2p( adapter, mpitch, mroll, myaw, indices[0], indices[1] );
+  return mc2p( adapter, mpitch, mroll, indices[0], indices[1] );
 }
 
 opengv::transformations_t 
@@ -1802,7 +1797,6 @@ opengv::absolute_pose::mc2p(
     const AbsoluteLineAdapterBase & adapter,
     const double & myPitch,
     const double & mxRoll,
-	const double & mzYaw,
     size_t index0,
     size_t index1)
 {
@@ -1889,9 +1883,7 @@ opengv::absolute_pose::mc2p(
   Ry_Pitch << cos(myPitch), 0, sin(myPitch),
         0, 1, 0,
         -sin(myPitch),0, cos(myPitch);
-  Eigen::Matrix3d Rz_Yaw;
-    Rz_Yaw << cos(mzYaw),-sin(mzYaw),0,sin(mzYaw),cos(mzYaw),0,0,0,1;
-  Eigen::Matrix3d R_W_B=Rz_Yaw*Ry_Pitch*Rx_Roll;
+  Eigen::Matrix3d R_W_B=Ry_Pitch*Rx_Roll;
  
 //  Eigen::Matrix3d R_W_B; // restore from eular
  Eigen::Matrix3d Rgt_W_C = R_W_B*R1;
