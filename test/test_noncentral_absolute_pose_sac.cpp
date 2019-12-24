@@ -71,11 +71,10 @@ int main( int argc, char** argv )
   //create a random viewpoint pose
   translation_t position = generateRandomTranslation(2.0);
   rotation_t rotation = generateRandomRotation(0.5);
-  double mypitch, mxroll, mzyaw;
+  double mypitch, mxroll;
   Eigen::Vector3d Eulerxyz=opengv::absolute_pose::rotationMatrixToEulerAngles(rotation);
 	mxroll = Eulerxyz(0);
 	mypitch = Eulerxyz(1);
-	mzyaw = Eulerxyz(2);
   
   //create a random camera-system
   translations_t camOffsets;
@@ -137,7 +136,7 @@ int main( int argc, char** argv )
       sac_problems::absolute_pose::AbsolutePoseSacProblem> absposeproblem_ptr(
       new sac_problems::absolute_pose::AbsolutePoseSacProblem(
       adapter,
-      sac_problems::absolute_pose::AbsolutePoseSacProblem::MC2P,mypitch,mxroll,mzyaw));
+      sac_problems::absolute_pose::AbsolutePoseSacProblem::MC2P,mypitch,mxroll));
   ransac.sac_model_ = absposeproblem_ptr;
   ransac.threshold_ = 1.0 - cos(atan(sqrt(2.0)*0.5/800.0));
   ransac.max_iterations_ = 50;
@@ -172,7 +171,7 @@ int main( int argc, char** argv )
       sac_problems::absolute_pose::AbsoluteLinePoseSacProblem> absposeproblem_ptr4(
       new sac_problems::absolute_pose::AbsoluteLinePoseSacProblem(
       adapter3,
-      sac_problems::absolute_pose::AbsoluteLinePoseSacProblem::MC1P1L,mypitch,mxroll,mzyaw));
+      sac_problems::absolute_pose::AbsoluteLinePoseSacProblem::MC1P1L,mypitch,mxroll));
   ransac4.sac_model_ = absposeproblem_ptr4;
   ransac4.threshold_ = 1.0 - cos(atan(sqrt(2.0)*0.5/800.0));
   ransac4.max_iterations_ = 50;
@@ -206,7 +205,7 @@ int main( int argc, char** argv )
       sac_problems::absolute_pose::AbsoluteLinePoseSacProblem> absposeproblem_ptr5(
       new sac_problems::absolute_pose::AbsoluteLinePoseSacProblem(
       adapter3,
-      sac_problems::absolute_pose::AbsoluteLinePoseSacProblem::MCMixed,mypitch,mxroll,mzyaw));
+      sac_problems::absolute_pose::AbsoluteLinePoseSacProblem::MCMixed,mypitch,mxroll));
   ransac5.sac_model_ = absposeproblem_ptr5;
   ransac5.threshold_ = 1.0 - cos(atan(sqrt(2.0)*0.5/800.0));
   ransac5.max_iterations_ = 50;
